@@ -123,16 +123,16 @@ function App() {
             <table className="inline-block">
               <thead>
                 <tr>
-                  <th className="border border-black">Day</th>
-                  <th className="border border-black">Questions</th>
-                  <th className="border border-black">Estimate</th>
+                  <th className="border">Day</th>
+                  <th className="border">Questions</th>
+                  <th className="border">Estimate</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="border border-black"></td>
-                  <td className="border border-black"></td>
-                  <td className="border border-black"></td>
+                  <td className="border"></td>
+                  <td className="border"></td>
+                  <td className="border"></td>
                 </tr>
               </tbody>
             </table>
