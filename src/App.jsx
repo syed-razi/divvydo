@@ -87,17 +87,20 @@ function App() {
             </ul>
           </div>
         </div>
-        <div className="h-screen w-screen snap-center flex flex-col justify-center">
-          <div className="text-center">
-            <h2 className="text-xl">Availability:</h2>
+        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
+          <h2 className="text-2xl">Availability:</h2>
+          <div className="flex min-w-full justify-center space-x-10">
             <DatePicker
-              selected={startDate}
+              selected={selectedDate}
               onChange={(date) => setSelectedDate(new Date(date))}
               startDate={startDate}
               endDate={endDate}
+              minDate={startDate}
+              maxDate={endDate}
               selectsRange
               inline
               readOnly
+              disabledKeyboardNavigation
             />
             <p>{selectedDate.toDateString()}</p>
             <label>
