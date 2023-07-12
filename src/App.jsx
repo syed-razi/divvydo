@@ -5,8 +5,18 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(startDate);
+  const [endDate, setEndDate] = useState(
+    new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate(),
+      23,
+      59,
+      59,
+      999
+    )
+  );
+  const [selectedDate, setSelectedDate] = useState(new Date(startDate));
 
   const dayNames = [
     "Sunday",
