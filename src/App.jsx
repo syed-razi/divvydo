@@ -17,16 +17,29 @@ function App() {
     )
   );
   const [selectedDate, setSelectedDate] = useState(new Date(startDate));
+  const [estimatedHours, setEstimatedHours] = useState(0);
+  const [questions, setQuestions] = useState([]);
+  const [questionNumber, setQuestionNumber] = useState(1);
+  const [marks, setMarks] = useState(0);
 
-  const dayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  function handleAddQuestion(e) {
+    e.preventDefault();
+
+    const newQuestion = {
+      id: questionNumber,
+      number: questionNumber,
+      marks: marks,
+    };
+
+    setQuestions([...questions, newQuestion]);
+    setQuestionNumber(questionNumber + 1);
+    setMarks(0);
+  }
+
+  function handleDeleteQuestion(id) {
+    setQuestions(questions.filter((question) => question.id != id));
+  }
+
 
   return (
     <>
@@ -108,20 +121,51 @@ function App() {
               placeholder="Question"
               type="number"
               min="0"
+              onChange={(e) => setQuestionNumber(+e.target.value)}
+              value={questionNumber}
             />
             <input
               className="border"
               placeholder="Mark"
               type="number"
               min="0"
+              onChange={(e) => setMarks(+e.target.value)}
+              value={marks}
             />
             <button
               className="border"
               type="submit"
+              onClick={handleAddQuestion}
             >
               add
             </button>
           </form>
+          {questions.length > 0 && (
+            <table className="inline-block">
+              <thead>
+                <tr>
+                  <th className="border">Question</th>
+                  <th className="border">Marks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {questions.map((question) => (
+                  <tr key={question.id}>
+                    <td className="border">{question.number}</td>
+                    <td className="border">{question.marks}</td>
+                    <td>
+                      <button
+                        className="border m-1"
+                        onClick={() => handleDeleteQuestion(question.id)}
+                      >
+                        delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
         <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
           <h2 className="text-2xl">Availability:</h2>
