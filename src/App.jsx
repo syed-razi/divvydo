@@ -30,62 +30,98 @@ function App() {
 
   return (
     <>
-      <div className="snap-y snap-mandatory h-screen overflow-scroll">
-        <div className="h-screen w-screen snap-center flex flex-col justify-center">
-          <h2 className="text-2xl text-center">Enter Assignment Details:</h2>
-          <div className="text-center">
-            <label>
-              Start Date:
-              <DatePicker
-                className="text-center border border-black"
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
-              />
-            </label>
-          </div>
-          <div className="text-center">
-            <label>
-              End Date:
-              <DatePicker
-                className="text-center border border-black"
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-              />
-            </label>
-          </div>
-          <div className="text-center">
-            <label>
-              Estimated hours:
-              <input
-                className="text-center border border-black"
-                type="number"
-              />
-            </label>
-          </div>
-        </div>
-        <div className="h-screen w-screen snap-center flex flex-col justify-center">
-          <div className="text-center">
-            <span>Question</span>
-            <span>Marks</span>
-            <ul>
-              <li>
+      <div className="snap-y snap-mandatory h-screen overflow-scroll scroll-smooth">
+        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
+          <h2 className="text-2xl">Enter Assignment Details:</h2>
+          <div className="flex flex-col justify-center space-y-3 items-end">
+            <div>
+              <label>
+                Start Date:&nbsp;
+                <DatePicker
+                  className="border"
+                  selected={startDate}
+                  onChange={(date) => {
+                    setSelectedDate(date);
+                    setStartDate(date);
+                  }}
+                  selectsStart
+                  startDate={startDate}
+                  endDate={endDate}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  timeCaption="time"
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                End Date:&nbsp;
+                <DatePicker
+                  className="border"
+                  selected={endDate}
+                  onChange={(date) => {
+                    setEndDate(
+                      new Date(
+                        date.getFullYear(),
+                        date.getMonth(),
+                        date.getDate(),
+                        23,
+                        59,
+                        59,
+                        999
+                      )
+                    );
+                  }}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  timeCaption="time"
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                Estimated hours:&nbsp;
                 <input
                   className="border"
-                  placeholder="Question"
                   type="number"
+                  value={estimatedHours}
+                  onChange={(e) => setEstimatedHours(+e.target.value)}
+                  min="0"
                 />
-                <input className="border" placeholder="Mark" type="number" />
-                <button className="border">add</button>
-              </li>
-            </ul>
+              </label>
+            </div>
           </div>
+        </div>
+        <div className="h-screen w-screen snap-start flex flex-col justify-start items-center space-y-10 overflow-scroll">
+          <h2 className="text-2xl">Enter Question Details:</h2>
+          <form className="flex">
+            <input
+              className="border"
+              placeholder="Question"
+              type="number"
+              min="0"
+            />
+            <input
+              className="border"
+              placeholder="Mark"
+              type="number"
+              min="0"
+            />
+            <button
+              className="border"
+              type="submit"
+            >
+              add
+            </button>
+          </form>
         </div>
         <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
           <h2 className="text-2xl">Availability:</h2>
