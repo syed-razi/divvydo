@@ -17,6 +17,19 @@ function App() {
     )
   );
   const [selectedDate, setSelectedDate] = useState(new Date(startDate));
+  const [availability, setAvailability] = useState(() => {
+    const initialAvailability = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      initialAvailability.push({
+        id: currentDate.getTime(),
+        date: new Date(currentDate),
+        hours: 0,
+      });
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return initialAvailability;
+  });
   const [estimatedHours, setEstimatedHours] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [questionNumber, setQuestionNumber] = useState(1);
@@ -40,6 +53,19 @@ function App() {
     setQuestions(questions.filter((question) => question.id != id));
   }
 
+  function handleUpdateAvailability(startDate, endDate) {
+    const newAvailability = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      newAvailability.push({
+        id: currentDate.getTime(),
+        date: new Date(currentDate),
+        hours: 0,
+      });
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    setAvailability(newAvailability);
+  }
 
   return (
     <>
@@ -56,6 +82,7 @@ function App() {
                   onChange={(date) => {
                     setSelectedDate(date);
                     setStartDate(date);
+                    handleUpdateAvailability(date, endDate);
                   }}
                   selectsStart
                   startDate={startDate}
@@ -86,6 +113,7 @@ function App() {
                         999
                       )
                     );
+                    handleUpdateAvailability(startDate, date);
                   }}
                   selectsEnd
                   startDate={startDate}
@@ -182,24 +210,45 @@ function App() {
               readOnly
               disabledKeyboardNavigation
             />
-            <p>{selectedDate.toDateString()}</p>
-            <label>
-              Hours:
-              <input
-                className="text-center border border-black"
-                type="number"
-              />
-            </label>
-            <br />
-            <label>
-              <input type="checkbox" />
-              Repeat every {dayNames[selectedDate.getDay()]}?
-            </label>
+            <div className="flex flex-col items-center space-y-5">
+              <p>{selectedDate.toDateString()}</p>
+              <form className="flex flex-col items-center space-y-5">
+                <label>
+                  Hours:
+                  <input
+                    className="border text-center"
+                    type="number"
+                    value={
+                      availability.find(
+                        (date) =>
+                          date.date.toString() === selectedDate.toString()
+                      ).hours
+                    }
+                    onChange={(e) =>
+                      setAvailability(
+                        availability.map((date) => {
+                          if (
+                            date.date.toString() === selectedDate.toString()
+                          ) {
+                            return {
+                              ...date,
+                              hours: +e.target.value,
+                            };
+                          } else {
+                            return date;
+                          }
+                        })
+                      )
+                    }
+                  />
+                </label>
+              </form>
+            </div>
           </div>
         </div>
-        <div className="h-screen w-screen snap-center flex flex-col justify-center">
-          <div className="text-center">
-            <h1>Breakdown</h1>
+        <div className="h-screen w-screen snap-start flex flex-col justify-start items-center space-y-10">
+          <h2 className="text-2xl">Breakdown</h2>
+          <div>
             <table className="inline-block">
               <thead>
                 <tr>
