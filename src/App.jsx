@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 
-import "react-datepicker/dist/react-datepicker.css";
+import "/src/App.css";
 
 function App() {
   const [startDate, setStartDate] = useState(new Date());
