@@ -190,7 +190,6 @@ function App() {
                   className="border"
                   selected={startDate}
                   onChange={(date) => {
-                    setSelectedDate(date);
                     setStartDate(date);
                     handleUpdateAvailability(date, endDate);
                   }}
