@@ -16,7 +16,6 @@ function App() {
       999
     )
   );
-  const [selectedDate, setSelectedDate] = useState(new Date(startDate));
   const [availability, setAvailability] = useState(() => {
     const initialAvailability = [];
     let currentDate = new Date(startDate);
@@ -77,7 +76,7 @@ function App() {
               } marks of question ${questions[q_pointer].number}`
             );
           } else if (marksAvailable === 0) {
-            a.todo.push("take a break :)")
+            a.todo.push("take a break :)");
           }
           break;
         }
@@ -104,6 +103,39 @@ function App() {
             <td className="border px-10">
               {Math.round((a.hours / totalAvailability || 0) * estimatedHours)}{" "}
               hours
+            </td>
+          </tr>
+        ))}
+      </>
+    );
+  };
+
+  const Availability = () => {
+    return (
+      <>
+        {availability.map((a) => (
+          <tr key={a.id}>
+            <td className="border px-10">{a.date.toDateString()}</td>
+            <td className="border px-10">
+              <input
+                className="border text-center"
+                type="number"
+                value={a.hours}
+                onChange={(e) =>
+                  setAvailability(
+                    availability.map((b) => {
+                      if (b.date.toString() === a.date.toString()) {
+                        return {
+                          ...b,
+                          hours: +e.target.value,
+                        };
+                      } else {
+                        return b;
+                      }
+                    })
+                  )
+                }
+              />
             </td>
           </tr>
         ))}
@@ -275,58 +307,25 @@ function App() {
         </div>
         <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
           <h2 className="text-2xl">Availability:</h2>
-          <div className="flex min-w-full justify-center space-x-10">
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(new Date(date))}
-              startDate={startDate}
-              endDate={endDate}
-              minDate={startDate}
-              maxDate={endDate}
-              selectsRange
-              inline
-              readOnly
-              disabledKeyboardNavigation
-            />
-            <div className="flex flex-col items-center space-y-5">
-              <p>{selectedDate.toDateString()}</p>
-              <form className="flex flex-col items-center space-y-5">
-                <label>
-                  Hours:
-                  <input
-                    className="border text-center"
-                    type="number"
-                    value={
-                      availability.find(
-                        (date) =>
-                          date.date.toString() === selectedDate.toString()
-                      ).hours
-                    }
-                    onChange={(e) =>
-                      setAvailability(
-                        availability.map((date) => {
-                          if (
-                            date.date.toString() === selectedDate.toString()
-                          ) {
-                            return {
-                              ...date,
-                              hours: +e.target.value,
-                            };
-                          } else {
-                            return date;
-                          }
-                        })
-                      )
-                    }
-                  />
-                </label>
-              </form>
-            </div>
+          <div>
+            <table className="inline-block">
+              <thead>
+                <tr>
+                  <th className="border">Date</th>
+                  <th className="border">Available Hours</th>
+                </tr>
+              </thead>
+              <tbody>
+                <Availability />
+              </tbody>
+            </table>
           </div>
         </div>
         <div className="h-screen w-screen snap-start flex flex-col justify-start items-center space-y-10">
           <h2 className="text-2xl">Breakdown</h2>
-          <button className="border p-2" onClick={getBreakdown}>Generate Breakdown</button>
+          <button className="border p-2" onClick={getBreakdown}>
+            Generate Breakdown
+          </button>
           {generated && (
             <div>
               <table className="inline-block">
