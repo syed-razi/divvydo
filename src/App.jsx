@@ -182,6 +182,10 @@ function App() {
       <div className="snap-y snap-mandatory h-screen overflow-scroll scroll-smooth">
         <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
           <h2 className="text-2xl">Enter Assignment Details:</h2>
+          <i>
+            Enter the start and end date of your assignment as well as how
+            long you think it should take you to complete
+          </i>
           <div className="flex flex-col justify-center space-y-3 items-end">
             <div>
               <label>
@@ -252,6 +256,9 @@ function App() {
         </div>
         <div className="h-screen w-screen snap-start flex flex-col justify-start items-center space-y-10 overflow-scroll">
           <h2 className="text-2xl">Enter Question Details:</h2>
+          <i>
+            Enter each question and how many marks it is worth
+          </i>
           <form className="flex">
             <input
               className="border"
@@ -306,6 +313,7 @@ function App() {
         </div>
         <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
           <h2 className="text-2xl">Availability:</h2>
+          <i>Enter how long you can work each day</i>
           <div>
             <table className="inline-block">
               <thead>
