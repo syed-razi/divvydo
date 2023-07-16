@@ -23,7 +23,7 @@ function App() {
       initialAvailability.push({
         id: currentDate.getTime(),
         date: new Date(currentDate),
-        hours: 0,
+        hours: "",
         todo: [],
         estimate: 0,
       });
@@ -31,18 +31,18 @@ function App() {
     }
     return initialAvailability;
   });
-  const [estimatedHours, setEstimatedHours] = useState(0);
+  const [estimatedHours, setEstimatedHours] = useState("");
   const [questions, setQuestions] = useState([]);
-  const [questionNumber, setQuestionNumber] = useState(0);
-  const [marks, setMarks] = useState(0);
+  const [questionNumber, setQuestionNumber] = useState("");
+  const [marks, setMarks] = useState("");
   const [generated, setGenerated] = useState(false);
 
   const totalMarks = questions.reduce(
-    (total, question) => total + question.marks,
+    (total, question) => total + +question.marks,
     0
   );
   const totalAvailability = availability.reduce(
-    (total, date) => total + date.hours,
+    (total, a) => total + +a.hours,
     0
   );
 
@@ -57,7 +57,7 @@ function App() {
     let leftOver = 0;
 
     for (const a of newAvailability) {
-      let marksAvailable = (a.hours / totalAvailability || 0) * totalMarks;
+      let marksAvailable = (+a.hours / totalAvailability || 0) * totalMarks;
 
       while (q_pointer < questions.length) {
         let marksOfQuestion =
@@ -87,7 +87,7 @@ function App() {
     setGenerated(true);
   }
 
-  const Breakdown = () => {
+  function Breakdown() {
     return (
       <>
         {availability.map((a) => (
@@ -101,48 +101,16 @@ function App() {
               </ul>
             </td>
             <td className="border px-10">
-              {Math.round((a.hours / totalAvailability || 0) * estimatedHours)}{" "}
-              hours
+              {Math.round(
+                (+a.hours / totalAvailability || 0) * +estimatedHours
+              )}
+              &nbsp;hours
             </td>
           </tr>
         ))}
       </>
     );
-  };
-
-  const Availability = () => {
-    return (
-      <>
-        {availability.map((a) => (
-          <tr key={a.id}>
-            <td className="border px-10">{a.date.toDateString()}</td>
-            <td className="border px-10">
-              <input
-                className="border text-center"
-                type="number"
-                value={a.hours === 0 ? "" : a.hours}
-                placeholder="Enter Hours"
-                onChange={(e) =>
-                  setAvailability(
-                    availability.map((b) => {
-                      if (b.date.toString() === a.date.toString()) {
-                        return {
-                          ...b,
-                          hours: +e.target.value,
-                        };
-                      } else {
-                        return b;
-                      }
-                    })
-                  )
-                }
-              />
-            </td>
-          </tr>
-        ))}
-      </>
-    );
-  };
+  }
 
   function handleAddQuestion(e) {
     e.preventDefault();
@@ -150,12 +118,12 @@ function App() {
     const newQuestion = {
       id: questionNumber,
       number: questionNumber,
-      marks: marks,
+      marks: +marks,
     };
 
     setQuestions([...questions, newQuestion]);
-    setQuestionNumber(questionNumber + 1);
-    setMarks(0);
+    setQuestionNumber(String(+questionNumber + 1));
+    setMarks("");
   }
 
   function handleDeleteQuestion(id) {
@@ -169,7 +137,7 @@ function App() {
       newAvailability.push({
         id: currentDate.getTime(),
         date: new Date(currentDate),
-        hours: 0,
+        hours: "",
         todo: [],
         estimate: 0,
       });
@@ -247,8 +215,8 @@ function App() {
                 <input
                   className="border"
                   type="number"
-                  value={estimatedHours === 0 ? "" : estimatedHours}
-                  onChange={(e) => setEstimatedHours(+e.target.value)}
+                  value={estimatedHours}
+                  onChange={(e) => setEstimatedHours(e.target.value)}
                   min="0"
                 />
               </label>
@@ -264,16 +232,16 @@ function App() {
               placeholder="Enter Question Number"
               type="number"
               min="0"
-              onChange={(e) => setQuestionNumber(+e.target.value)}
-              value={questionNumber === 0 ? "" : questionNumber}
+              onChange={(e) => setQuestionNumber(e.target.value)}
+              value={questionNumber}
             />
             <input
               className="border"
               placeholder="Enter Marks"
               type="number"
               min="0"
-              onChange={(e) => setMarks(+e.target.value)}
-              value={marks === 0 ? "" : marks}
+              onChange={(e) => setMarks(e.target.value)}
+              value={marks}
             />
             <button
               className="border"
@@ -322,7 +290,33 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                <Availability />
+                {availability.map((a) => (
+                  <tr key={a.id}>
+                    <td className="border px-10">{a.date.toDateString()}</td>
+                    <td className="border px-10">
+                      <input
+                        className="border text-center"
+                        type="number"
+                        value={a.hours}
+                        placeholder="Enter Hours"
+                        onChange={(e) =>
+                          setAvailability(
+                            availability.map((b) => {
+                              if (b.id === a.id) {
+                                return {
+                                  ...b,
+                                  hours: e.target.value,
+                                };
+                              } else {
+                                return b;
+                              }
+                            })
+                          )
+                        }
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
