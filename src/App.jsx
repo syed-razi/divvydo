@@ -33,7 +33,7 @@ function App() {
   });
   const [estimatedHours, setEstimatedHours] = useState(0);
   const [questions, setQuestions] = useState([]);
-  const [questionNumber, setQuestionNumber] = useState(1);
+  const [questionNumber, setQuestionNumber] = useState(0);
   const [marks, setMarks] = useState(0);
   const [generated, setGenerated] = useState(false);
 
@@ -120,7 +120,8 @@ function App() {
               <input
                 className="border text-center"
                 type="number"
-                value={a.hours}
+                value={a.hours === 0 ? "" : a.hours}
+                placeholder="Enter Hours"
                 onChange={(e) =>
                   setAvailability(
                     availability.map((b) => {
@@ -183,8 +184,8 @@ function App() {
         <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
           <h2 className="text-2xl">Enter Assignment Details:</h2>
           <i>
-            Enter the start and end date of your assignment as well as how
-            long you think it should take you to complete
+            Enter the start and end date of your assignment as well as how long
+            you think it should take you to complete
           </i>
           <div className="flex flex-col justify-center space-y-3 items-end">
             <div>
@@ -246,7 +247,7 @@ function App() {
                 <input
                   className="border"
                   type="number"
-                  value={estimatedHours}
+                  value={estimatedHours === 0 ? "" : estimatedHours}
                   onChange={(e) => setEstimatedHours(+e.target.value)}
                   min="0"
                 />
@@ -254,27 +255,25 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="h-screen w-screen snap-start flex flex-col justify-start items-center space-y-10 overflow-scroll">
+        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10 overflow-scroll">
           <h2 className="text-2xl">Enter Question Details:</h2>
-          <i>
-            Enter each question and how many marks it is worth
-          </i>
+          <i>Enter each question and how many marks it is worth</i>
           <form className="flex">
             <input
               className="border"
-              placeholder="Question"
+              placeholder="Enter Question Number"
               type="number"
               min="0"
               onChange={(e) => setQuestionNumber(+e.target.value)}
-              value={questionNumber}
+              value={questionNumber === 0 ? "" : questionNumber}
             />
             <input
               className="border"
-              placeholder="Mark"
+              placeholder="Enter Marks"
               type="number"
               min="0"
               onChange={(e) => setMarks(+e.target.value)}
-              value={marks}
+              value={marks === 0 ? "" : marks}
             />
             <button
               className="border"
@@ -328,7 +327,7 @@ function App() {
             </table>
           </div>
         </div>
-        <div className="h-screen w-screen snap-start flex flex-col justify-start items-center space-y-10">
+        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
           <h2 className="text-2xl">Breakdown</h2>
           <button className="border p-2" onClick={getBreakdown}>
             Generate Breakdown
