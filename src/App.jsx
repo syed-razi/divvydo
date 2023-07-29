@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
 
 import "/src/App.css";
@@ -36,6 +36,73 @@ function App() {
   const [questionNumber, setQuestionNumber] = useState("");
   const [marks, setMarks] = useState("");
   const [generated, setGenerated] = useState(false);
+
+  const datesRef = useRef(null);
+  const questionsRef = useRef(null);
+  const hoursRef = useRef(null);
+  const breakdownRef = useRef(null);
+
+  const [navigation, setNavigation] = useState([
+    {
+      name: "Dates",
+      ref: datesRef,
+      selected: true,
+    },
+    {
+      name: "Questions",
+      ref: questionsRef,
+      selected: false,
+    },
+    {
+      name: "Hours",
+      ref: hoursRef,
+      selected: false,
+    },
+    {
+      name: "Breakdown",
+      ref: breakdownRef,
+      selected: false,
+    },
+  ]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) =>
+          setNavigation((navigation) =>
+            navigation.map((n) => {
+              if (n.ref.current === entry.target) {
+                return {
+                  ...n,
+                  selected: entry.isIntersecting,
+                };
+              } else {
+                return n;
+              }
+            })
+          )
+        );
+      },
+      { threshold: 0.9 }
+    );
+
+    const datesRefCopy = datesRef.current;
+    const questionsRefCopy = questionsRef.current;
+    const hoursRefCopy = hoursRef.current;
+    const breakdownRefCopy = breakdownRef.current;
+
+    observer.observe(datesRefCopy);
+    observer.observe(questionsRefCopy);
+    observer.observe(hoursRefCopy);
+    observer.observe(breakdownRefCopy);
+
+    return () => {
+      observer.unobserve(datesRefCopy);
+      observer.unobserve(questionsRefCopy);
+      observer.unobserve(hoursRefCopy);
+      observer.unobserve(breakdownRefCopy);
+    };
+  }, []);
 
   const totalMarks = questions.reduce(
     (total, question) => total + +question.marks,
@@ -148,8 +215,27 @@ function App() {
 
   return (
     <>
+      <ul className="flex flex-col fixed mt-32">
+        {navigation.map((n) => (
+          <li
+            key={crypto.randomUUID()}
+            className={`cursor-pointer mx-5 my-2 ${!n.selected ? "text-gray-400" : ""}`}
+            onClick={() =>
+              n.ref.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              })
+            }
+          >
+            {n.name}
+          </li>
+        ))}
+      </ul>
       <div className="snap-y snap-mandatory h-screen overflow-scroll scroll-smooth">
-        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
+        <div
+          ref={datesRef}
+          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10"
+        >
           <h2 className="text-2xl">Enter Assignment Details:</h2>
           <i>
             Enter the start and end date of your assignment as well as how long
@@ -223,7 +309,10 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10 overflow-scroll">
+        <div
+          ref={questionsRef}
+          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10 overflow-scroll"
+        >
           <h2 className="text-2xl">Enter Question Details:</h2>
           <i>Enter each question and how many marks it is worth</i>
           <form className="flex">
@@ -278,7 +367,10 @@ function App() {
             </table>
           )}
         </div>
-        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
+        <div
+          ref={hoursRef}
+          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10"
+        >
           <h2 className="text-2xl">Availability:</h2>
           <i>Enter how long you can work each day</i>
           <div>
@@ -321,7 +413,10 @@ function App() {
             </table>
           </div>
         </div>
-        <div className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10">
+        <div
+          ref={breakdownRef}
+          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10"
+        >
           <h2 className="text-2xl">Breakdown</h2>
           <button className="border p-2" onClick={getBreakdown}>
             Generate Breakdown
