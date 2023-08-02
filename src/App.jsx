@@ -215,20 +215,29 @@ function App() {
 
   return (
     <>
-      <ul className="flex flex-col fixed mt-32">
+      <ul className="flex flex-col fixed ml-8 mt-32">
         {navigation.map((n) => (
-          <li
-            key={crypto.randomUUID()}
-            className={`cursor-pointer mx-5 my-2 ${!n.selected ? "text-gray-400" : ""}`}
-            onClick={() =>
-              n.ref.current.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              })
-            }
-          >
-            {n.name}
-          </li>
+          <>
+            <li
+              key={crypto.randomUUID()}
+              className="flex items-center justify-between w-24 h-12"
+            >
+              <a
+                className={`cursor-pointer inline-block ${
+                  !n.selected ? "text-gray-400" : ""
+                }`}
+                onClick={() =>
+                  n.ref.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  })
+                }
+              >
+                {n.name}
+              </a>
+              {n.selected && <span className="bg-black w-1 h-3/5 animate-grow inline-block"></span>}
+            </li>
+          </>
         ))}
       </ul>
       <div className="snap-y snap-mandatory h-screen overflow-scroll scroll-smooth">
