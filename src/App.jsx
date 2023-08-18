@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "/src/App.css";
 
 function App() {
+  // startDate and endDate are used to 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(
     new Date(
@@ -97,6 +98,7 @@ function App() {
     observer.observe(breakdownRefCopy);
 
     return () => {
+      console.log("unobserving");
       observer.unobserve(datesRefCopy);
       observer.unobserve(questionsRefCopy);
       observer.unobserve(hoursRefCopy);
@@ -217,27 +219,27 @@ function App() {
     <>
       <ul className="flex flex-col fixed ml-8 mt-32">
         {navigation.map((n) => (
-          <>
-            <li
-              key={crypto.randomUUID()}
-              className="flex items-center justify-between w-24 h-12"
+          <li
+            key={crypto.randomUUID()}
+            className="flex items-center justify-between w-24 h-12"
+          >
+            <a
+              className={`cursor-pointer inline-block ${
+                !n.selected ? "text-gray-400" : ""
+              }`}
+              onClick={() =>
+                n.ref.current.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                })
+              }
             >
-              <a
-                className={`cursor-pointer inline-block ${
-                  !n.selected ? "text-gray-400" : ""
-                }`}
-                onClick={() =>
-                  n.ref.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                  })
-                }
-              >
-                {n.name}
-              </a>
-              {n.selected && <span className="bg-black w-1 h-3/5 animate-grow inline-block"></span>}
-            </li>
-          </>
+              {n.name}
+            </a>
+            {n.selected && (
+              <span className="bg-black w-1 h-3/5 animate-grow inline-block"></span>
+            )}
+          </li>
         ))}
       </ul>
       <div className="snap-y snap-mandatory h-screen overflow-scroll scroll-smooth">
