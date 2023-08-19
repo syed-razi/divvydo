@@ -4,7 +4,6 @@ import DatePicker from "react-datepicker";
 import "/src/App.css";
 
 function App() {
-  // startDate and endDate are used to 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(
     new Date(
@@ -218,11 +217,8 @@ function App() {
   return (
     <>
       <ul className="flex flex-col fixed ml-8 mt-32">
-        {navigation.map((n) => (
-          <li
-            key={crypto.randomUUID()}
-            className="flex items-center justify-between w-24 h-12"
-          >
+        {navigation.map((n, i) => (
+          <li key={i} className="flex items-center justify-between w-24 h-12">
             <a
               className={`cursor-pointer inline-block ${
                 !n.selected ? "text-gray-400" : ""
