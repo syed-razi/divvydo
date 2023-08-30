@@ -13,8 +13,8 @@ function App() {
       23,
       59,
       59,
-      999
-    )
+      999,
+    ),
   );
   const [availability, setAvailability] = useState(() => {
     const initialAvailability = [];
@@ -79,11 +79,11 @@ function App() {
               } else {
                 return n;
               }
-            })
-          )
+            }),
+          ),
         );
       },
-      { threshold: 0.9 }
+      { threshold: 0.9 },
     );
 
     const datesRefCopy = datesRef.current;
@@ -107,11 +107,11 @@ function App() {
 
   const totalMarks = questions.reduce(
     (total, question) => total + +question.marks,
-    0
+    0,
   );
   const totalAvailability = availability.reduce(
     (total, a) => total + +a.hours,
-    0
+    0,
   );
 
   function getBreakdown() {
@@ -141,7 +141,7 @@ function App() {
             a.todo.push(
               `finish ${Math.round(marksAvailable)} / ${
                 questions[q_pointer].marks
-              } marks of question ${questions[q_pointer].number}`
+              } marks of question ${questions[q_pointer].number}`,
             );
           } else if (marksAvailable === 0) {
             a.todo.push("take a break :)");
@@ -170,7 +170,7 @@ function App() {
             </td>
             <td className="border px-10">
               {Math.round(
-                (+a.hours / totalAvailability || 0) * +estimatedHours
+                (+a.hours / totalAvailability || 0) * +estimatedHours,
               )}
               &nbsp;hours
             </td>
@@ -216,11 +216,11 @@ function App() {
 
   return (
     <>
-      <ul className="flex flex-col fixed ml-8 mt-32">
+      <ul className="fixed ml-8 mt-32 flex flex-col">
         {navigation.map((n, i) => (
-          <li key={i} className="flex items-center justify-between w-24 h-12">
+          <li key={i} className="flex h-12 w-24 items-center justify-between">
             <a
-              className={`cursor-pointer inline-block ${
+              className={`inline-block cursor-pointer ${
                 !n.selected ? "text-gray-400" : ""
               }`}
               onClick={() =>
@@ -233,22 +233,22 @@ function App() {
               {n.name}
             </a>
             {n.selected && (
-              <span className="bg-black w-1 h-3/5 animate-grow inline-block"></span>
+              <span className="inline-block h-3/5 w-1 animate-grow bg-black"></span>
             )}
           </li>
         ))}
       </ul>
-      <div className="snap-y snap-mandatory h-screen overflow-scroll scroll-smooth">
+      <div className="h-screen snap-y snap-mandatory overflow-scroll scroll-smooth">
         <div
           ref={datesRef}
-          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10"
+          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10"
         >
           <h2 className="text-2xl">Enter Assignment Details:</h2>
           <i>
             Enter the start and end date of your assignment as well as how long
             you think it should take you to complete
           </i>
-          <div className="flex flex-col justify-center space-y-3 items-end">
+          <div className="flex flex-col items-end justify-center space-y-3">
             <div>
               <label>
                 Start Date:&nbsp;
@@ -285,8 +285,8 @@ function App() {
                         23,
                         59,
                         59,
-                        999
-                      )
+                        999,
+                      ),
                     );
                     handleUpdateAvailability(startDate, date);
                   }}
@@ -318,7 +318,7 @@ function App() {
         </div>
         <div
           ref={questionsRef}
-          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10 overflow-scroll"
+          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10 overflow-scroll"
         >
           <h2 className="text-2xl">Enter Question Details:</h2>
           <i>Enter each question and how many marks it is worth</i>
@@ -362,7 +362,7 @@ function App() {
                     <td className="border">{question.marks}</td>
                     <td>
                       <button
-                        className="border m-1"
+                        className="m-1 border"
                         onClick={() => handleDeleteQuestion(question.id)}
                       >
                         delete
@@ -376,7 +376,7 @@ function App() {
         </div>
         <div
           ref={hoursRef}
-          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10"
+          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10"
         >
           <h2 className="text-2xl">Availability:</h2>
           <i>Enter how long you can work each day</i>
@@ -409,7 +409,7 @@ function App() {
                               } else {
                                 return b;
                               }
-                            })
+                            }),
                           )
                         }
                       />
@@ -422,7 +422,7 @@ function App() {
         </div>
         <div
           ref={breakdownRef}
-          className="h-screen w-screen snap-center flex flex-col justify-center items-center space-y-10"
+          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10"
         >
           <h2 className="text-2xl">Breakdown</h2>
           <button className="border p-2" onClick={getBreakdown}>
