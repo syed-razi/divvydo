@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Dates from "./Dates";
+import Questions from "./Questions";
+import Availability from "./Availability";
+import Breakdown from "./Breakdown";
 
 import "/src/App.css";
 
@@ -87,31 +90,6 @@ function App() {
     setGenerated(true);
   }
 
-  function Breakdown() {
-    return (
-      <>
-        {availability.map((a) => (
-          <tr key={a.id}>
-            <td className="border px-10">{a.date.toDateString()}</td>
-            <td className="border px-10">
-              <ul className="list-disc">
-                {a.todo.map((item) => (
-                  <li key={crypto.randomUUID()}>{item}</li>
-                ))}
-              </ul>
-            </td>
-            <td className="border px-10">
-              {Math.round(
-                (+a.hours / totalAvailability || 0) * +estimatedHours,
-              )}
-              &nbsp;hours
-            </td>
-          </tr>
-        ))}
-      </>
-    );
-  }
-
   function handleAddQuestion(e) {
     e.preventDefault();
 
@@ -177,126 +155,26 @@ function App() {
           onStartChange={handleStartChange}
           onEndChange={handleEndChange}
         />
-        <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10 overflow-scroll">
-          <h2 className="text-2xl">Enter Question Details:</h2>
-          <i>Enter each question and how many marks it is worth</i>
-          <form className="flex">
-            <input
-              className="border"
-              placeholder="Enter Question Number"
-              type="number"
-              min="0"
-              onChange={(e) => setQuestionNumber(e.target.value)}
-              value={questionNumber}
-            />
-            <input
-              className="border"
-              placeholder="Enter Marks"
-              type="number"
-              min="0"
-              onChange={(e) => setMarks(e.target.value)}
-              value={marks}
-            />
-            <button
-              className="border"
-              type="submit"
-              onClick={handleAddQuestion}
-            >
-              add
-            </button>
-          </form>
-          {questions.length > 0 && (
-            <table className="inline-block">
-              <thead>
-                <tr>
-                  <th className="border">Question</th>
-                  <th className="border">Marks</th>
-                </tr>
-              </thead>
-              <tbody>
-                {questions.map((question) => (
-                  <tr key={question.id}>
-                    <td className="border">{question.number}</td>
-                    <td className="border">{question.marks}</td>
-                    <td>
-                      <button
-                        className="m-1 border"
-                        onClick={() => handleDeleteQuestion(question.id)}
-                      >
-                        delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-        <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10">
-          <h2 className="text-2xl">Availability:</h2>
-          <i>Enter how long you can work each day</i>
-          <div>
-            <table className="inline-block">
-              <thead>
-                <tr>
-                  <th className="border">Date</th>
-                  <th className="border">Available Hours</th>
-                </tr>
-              </thead>
-              <tbody>
-                {availability.map((a) => (
-                  <tr key={a.id}>
-                    <td className="border px-10">{a.date.toDateString()}</td>
-                    <td className="border px-10">
-                      <input
-                        className="border text-center"
-                        type="number"
-                        value={a.hours}
-                        placeholder="Enter Hours"
-                        onChange={(e) =>
-                          setAvailability(
-                            availability.map((b) => {
-                              if (b.id === a.id) {
-                                return {
-                                  ...b,
-                                  hours: e.target.value,
-                                };
-                              } else {
-                                return b;
-                              }
-                            }),
-                          )
-                        }
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10">
-          <h2 className="text-2xl">Breakdown</h2>
-          <button className="border p-2" onClick={getBreakdown}>
-            Generate Breakdown
-          </button>
-          {generated && (
-            <div>
-              <table className="inline-block">
-                <thead>
-                  <tr>
-                    <th className="border">Day</th>
-                    <th className="border">To Do</th>
-                    <th className="border">Estimate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <Breakdown />
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+        <Questions
+          questions={questions}
+          questionNumber={questionNumber}
+          setQuestionNumber={setQuestionNumber}
+          marks={marks}
+          setMarks={setMarks}
+          handleAddQuestion={handleAddQuestion}
+          handleDeleteQuestion={handleDeleteQuestion}
+        />
+        <Availability
+          availability={availability}
+          setAvailability={setAvailability}
+        />
+        <Breakdown
+          generated={generated}
+          getBreakdown={getBreakdown}
+          availability={availability}
+          estimatedHours={estimatedHours}
+          totalAvailability={totalAvailability}
+        />
       </div>
     </>
   );
