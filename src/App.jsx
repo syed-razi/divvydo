@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import DatePicker from "react-datepicker";
+import { useState } from "react";
+import Dates from "./Dates";
 
 import "/src/App.css";
 
@@ -36,74 +36,6 @@ function App() {
   const [questionNumber, setQuestionNumber] = useState("");
   const [marks, setMarks] = useState("");
   const [generated, setGenerated] = useState(false);
-
-  const datesRef = useRef(null);
-  const questionsRef = useRef(null);
-  const hoursRef = useRef(null);
-  const breakdownRef = useRef(null);
-
-  const [navigation, setNavigation] = useState([
-    {
-      name: "Dates",
-      ref: datesRef,
-      selected: true,
-    },
-    {
-      name: "Questions",
-      ref: questionsRef,
-      selected: false,
-    },
-    {
-      name: "Hours",
-      ref: hoursRef,
-      selected: false,
-    },
-    {
-      name: "Breakdown",
-      ref: breakdownRef,
-      selected: false,
-    },
-  ]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) =>
-          setNavigation((navigation) =>
-            navigation.map((n) => {
-              if (n.ref.current === entry.target) {
-                return {
-                  ...n,
-                  selected: entry.isIntersecting,
-                };
-              } else {
-                return n;
-              }
-            }),
-          ),
-        );
-      },
-      { threshold: 0.9 },
-    );
-
-    const datesRefCopy = datesRef.current;
-    const questionsRefCopy = questionsRef.current;
-    const hoursRefCopy = hoursRef.current;
-    const breakdownRefCopy = breakdownRef.current;
-
-    observer.observe(datesRefCopy);
-    observer.observe(questionsRefCopy);
-    observer.observe(hoursRefCopy);
-    observer.observe(breakdownRefCopy);
-
-    return () => {
-      console.log("unobserving");
-      observer.unobserve(datesRefCopy);
-      observer.unobserve(questionsRefCopy);
-      observer.unobserve(hoursRefCopy);
-      observer.unobserve(breakdownRefCopy);
-    };
-  }, []);
 
   const totalMarks = questions.reduce(
     (total, question) => total + +question.marks,
@@ -214,112 +146,38 @@ function App() {
     setAvailability(newAvailability);
   }
 
+  function handleStartChange(date) {
+    setStartDate(date);
+    handleUpdateAvailability(date, endDate);
+  }
+
+  function handleEndChange(date) {
+    setEndDate(
+      new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        23,
+        59,
+        59,
+        999,
+      ),
+    );
+    handleUpdateAvailability(startDate, date);
+  }
+
   return (
     <>
-      <ul className="fixed ml-8 mt-32 flex flex-col">
-        {navigation.map((n, i) => (
-          <li key={i} className="flex h-12 w-24 items-center justify-between">
-            <a
-              className={`inline-block cursor-pointer ${
-                !n.selected ? "text-gray-400" : ""
-              }`}
-              onClick={() =>
-                n.ref.current.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                })
-              }
-            >
-              {n.name}
-            </a>
-            {n.selected && (
-              <span className="inline-block h-3/5 w-1 animate-grow bg-black"></span>
-            )}
-          </li>
-        ))}
-      </ul>
       <div className="h-screen snap-y snap-mandatory overflow-scroll scroll-smooth">
-        <div
-          ref={datesRef}
-          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10"
-        >
-          <h2 className="text-2xl">Enter Assignment Details:</h2>
-          <i>
-            Enter the start and end date of your assignment as well as how long
-            you think it should take you to complete
-          </i>
-          <div className="flex flex-col items-end justify-center space-y-3">
-            <div>
-              <label>
-                Start Date:&nbsp;
-                <DatePicker
-                  className="border"
-                  selected={startDate}
-                  onChange={(date) => {
-                    setStartDate(date);
-                    handleUpdateAvailability(date, endDate);
-                  }}
-                  selectsStart
-                  startDate={startDate}
-                  endDate={endDate}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={15}
-                  timeCaption="time"
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                End Date:&nbsp;
-                <DatePicker
-                  className="border"
-                  selected={endDate}
-                  onChange={(date) => {
-                    setEndDate(
-                      new Date(
-                        date.getFullYear(),
-                        date.getMonth(),
-                        date.getDate(),
-                        23,
-                        59,
-                        59,
-                        999,
-                      ),
-                    );
-                    handleUpdateAvailability(startDate, date);
-                  }}
-                  selectsEnd
-                  startDate={startDate}
-                  endDate={endDate}
-                  minDate={startDate}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={15}
-                  timeCaption="time"
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Estimated hours:&nbsp;
-                <input
-                  className="border"
-                  type="number"
-                  value={estimatedHours}
-                  onChange={(e) => setEstimatedHours(e.target.value)}
-                  min="0"
-                />
-              </label>
-            </div>
-          </div>
-        </div>
-        <div
-          ref={questionsRef}
-          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10 overflow-scroll"
-        >
+        <Dates
+          startDate={startDate}
+          endDate={endDate}
+          estimatedHours={estimatedHours}
+          setEstimatedHours={setEstimatedHours}
+          onStartChange={handleStartChange}
+          onEndChange={handleEndChange}
+        />
+        <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10 overflow-scroll">
           <h2 className="text-2xl">Enter Question Details:</h2>
           <i>Enter each question and how many marks it is worth</i>
           <form className="flex">
@@ -374,10 +232,7 @@ function App() {
             </table>
           )}
         </div>
-        <div
-          ref={hoursRef}
-          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10"
-        >
+        <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10">
           <h2 className="text-2xl">Availability:</h2>
           <i>Enter how long you can work each day</i>
           <div>
@@ -420,10 +275,7 @@ function App() {
             </table>
           </div>
         </div>
-        <div
-          ref={breakdownRef}
-          className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10"
-        >
+        <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10">
           <h2 className="text-2xl">Breakdown</h2>
           <button className="border p-2" onClick={getBreakdown}>
             Generate Breakdown
