@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { QuestionType, AvailabilityType } from "./Types";
 import Dates from "./Dates";
 import Questions from "./Questions";
 import Availability from "./Availability";
@@ -20,7 +21,7 @@ function App() {
     ),
   );
   const [availability, setAvailability] = useState(() => {
-    const initialAvailability = [];
+    const initialAvailability: AvailabilityType[] = [];
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
       initialAvailability.push({
@@ -35,12 +36,12 @@ function App() {
     return initialAvailability;
   });
   const [estimatedHours, setEstimatedHours] = useState("");
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [questionNumber, setQuestionNumber] = useState("");
   const [marks, setMarks] = useState("");
   const [generated, setGenerated] = useState(false);
 
-  function handleAddQuestion(e) {
+  function handleAddQuestion(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const newQuestion = {
@@ -54,11 +55,11 @@ function App() {
     setMarks("");
   }
 
-  function handleDeleteQuestion(id) {
+  function handleDeleteQuestion(id: string) {
     setQuestions(questions.filter((question) => question.id != id));
   }
 
-  function handleUpdateAvailability(startDate, endDate) {
+  function handleUpdateAvailability(startDate: Date, endDate: Date) {
     const newAvailability = [];
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
@@ -74,12 +75,12 @@ function App() {
     setAvailability(newAvailability);
   }
 
-  function handleStartChange(date) {
+  function handleStartChange(date: Date) {
     setStartDate(date);
     handleUpdateAvailability(date, endDate);
   }
 
-  function handleEndChange(date) {
+  function handleEndChange(date: Date) {
     setEndDate(
       new Date(
         date.getFullYear(),

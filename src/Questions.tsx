@@ -1,3 +1,5 @@
+import { QuestionsProps } from "./Types";
+
 export default function Questions({
   questions,
   questionNumber,
@@ -6,12 +8,12 @@ export default function Questions({
   setMarks,
   handleAddQuestion,
   handleDeleteQuestion,
-}) {
+}: QuestionsProps) {
   return (
     <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10 overflow-scroll">
       <h2 className="text-2xl">Enter Question Details:</h2>
       <i>Enter each question and how many marks it is worth</i>
-      <form className="flex">
+      <form className="flex" onSubmit={handleAddQuestion}>
         <input
           className="border"
           placeholder="Enter Question Number"
@@ -28,7 +30,7 @@ export default function Questions({
           onChange={(e) => setMarks(e.target.value)}
           value={marks}
         />
-        <button className="border" type="submit" onClick={handleAddQuestion}>
+        <button className="border" type="submit">
           add
         </button>
       </form>

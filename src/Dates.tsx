@@ -1,4 +1,5 @@
 import DatePicker from "react-datepicker";
+import { DatesProps } from "./Types";
 
 export default function Dates({
   startDate,
@@ -7,7 +8,7 @@ export default function Dates({
   setEstimatedHours,
   onStartChange,
   onEndChange,
-}) {
+}: DatesProps) {
   return (
     <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10">
       <h2 className="text-2xl">Enter Assignment Details:</h2>
@@ -22,7 +23,7 @@ export default function Dates({
             <DatePicker
               className="border"
               selected={startDate}
-              onChange={(date) => {
+              onChange={(date: Date) => {
                 onStartChange(date);
               }}
               selectsStart
@@ -42,7 +43,7 @@ export default function Dates({
             <DatePicker
               className="border"
               selected={endDate}
-              onChange={(date) => {
+              onChange={(date: Date) => {
                 onEndChange(date);
               }}
               selectsEnd

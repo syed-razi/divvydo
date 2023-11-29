@@ -1,4 +1,9 @@
-export default function Availability({ availability, setAvailability }) {
+import { AvailabilityProps } from "./Types";
+
+export default function Availability({
+  availability,
+  setAvailability,
+}: AvailabilityProps) {
   return (
     <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10">
       <h2 className="text-2xl">Availability:</h2>

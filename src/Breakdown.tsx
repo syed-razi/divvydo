@@ -1,3 +1,5 @@
+import { AvailabilityType, BreakdownProps } from "./Types";
+
 export default function Breakdown({
   generated,
   availability,
@@ -5,7 +7,7 @@ export default function Breakdown({
   estimatedHours,
   questions,
   setGenerated,
-}) {
+}: BreakdownProps) {
   const totalMarks = questions.reduce(
     (total, question) => total + +question.marks,
     0,
@@ -16,7 +18,7 @@ export default function Breakdown({
   );
 
   function getBreakdown() {
-    const newAvailability = availability.map((a) => ({
+    const newAvailability: AvailabilityType[] = availability.map((a) => ({
       ...a,
       todo: [],
     }));
