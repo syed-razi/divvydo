@@ -23,34 +23,55 @@ export default function Breakdown({
       todo: [],
     }));
 
-    let q_pointer = 0;
+    let questionIndex = 0;
 
-    let leftOver = 0;
+    let remainder = 0;
 
     for (const a of newAvailability) {
-      let marksAvailable = (+a.hours / totalAvailability || 0) * totalMarks;
+      let marksRemainingToday =
+        (+a.hours / totalAvailability || 0) * totalMarks;
 
-      while (q_pointer < questions.length) {
-        let marksOfQuestion =
-          leftOver != 0 ? leftOver : questions[q_pointer].marks;
-        if (marksAvailable >= marksOfQuestion) {
-          marksAvailable -= marksOfQuestion;
-          a.todo.push(`complete question ${questions[q_pointer].number}`);
-          q_pointer++;
-          leftOver = 0;
-        } else {
-          leftOver = marksOfQuestion - marksAvailable;
-          if (Math.round(marksAvailable) > 0) {
-            a.todo.push(
-              `finish ${Math.round(marksAvailable)} / ${
-                questions[q_pointer].marks
-              } marks of question ${questions[q_pointer].number}`,
-            );
-          } else if (marksAvailable === 0) {
-            a.todo.push("take a break :)");
-          }
+      if (marksRemainingToday === 0) {
+        a.todo.push("take a break :)");
+        continue;
+      }
+
+      while (questionIndex < questions.length) {
+        if (marksRemainingToday === 0) {
           break;
         }
+
+        let marksRemainingForCurrQuestion =
+          remainder != 0 ? remainder : questions[questionIndex].marks;
+
+        remainder =
+          marksRemainingToday >= marksRemainingForCurrQuestion
+            ? 0
+            : marksRemainingForCurrQuestion - marksRemainingToday;
+
+        let marksToCompleteForCurrQuestion =
+          marksRemainingToday >= marksRemainingForCurrQuestion
+            ? marksRemainingForCurrQuestion
+            : marksRemainingToday;
+
+        a.todo.push(
+          `finish ${Math.round(marksToCompleteForCurrQuestion * 100) / 100} / ${
+            questions[questionIndex].marks
+          } marks of question ${questions[questionIndex].number} (${Math.round(
+            ((questions[questionIndex].marks - remainder) /
+              questions[questionIndex].marks) *
+              100,
+          )}% COMPLETE)`,
+        );
+
+        if (remainder === 0) {
+          questionIndex++;
+        }
+
+        marksRemainingToday =
+          marksRemainingForCurrQuestion > marksRemainingToday
+            ? 0
+            : marksRemainingToday - marksRemainingForCurrQuestion;
       }
     }
 
@@ -87,8 +108,10 @@ export default function Breakdown({
                   </td>
                   <td className="border px-10">
                     {Math.round(
-                      (+a.hours / totalAvailability || 0) * +estimatedHours,
-                    )}
+                      (+a.hours / totalAvailability || 0) *
+                        +estimatedHours *
+                        100,
+                    ) / 100}
                     &nbsp;hours
                   </td>
                 </tr>
