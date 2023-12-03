@@ -23,26 +23,6 @@ function App() {
   const [availability, setAvailability] = useState<AvailabilityType[]>([]);
   const [estimatedHours, setEstimatedHours] = useState("");
   const [questions, setQuestions] = useState<QuestionType[]>([]);
-  const [questionNumber, setQuestionNumber] = useState("");
-  const [marks, setMarks] = useState("");
-
-  function handleAddQuestion(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const newQuestion = {
-      id: questionNumber,
-      number: questionNumber,
-      marks: +marks,
-    };
-
-    setQuestions([...questions, newQuestion]);
-    setQuestionNumber(String(+questionNumber + 1));
-    setMarks("");
-  }
-
-  function handleDeleteQuestion(id: string) {
-    setQuestions(questions.filter((question) => question.id != id));
-  }
 
   function handleUpdateAvailability(startDate: Date, endDate: Date) {
     const newAvailability = [];
@@ -89,15 +69,7 @@ function App() {
           onStartChange={handleStartChange}
           onEndChange={handleEndChange}
         />
-        <Questions
-          questions={questions}
-          questionNumber={questionNumber}
-          setQuestionNumber={setQuestionNumber}
-          marks={marks}
-          setMarks={setMarks}
-          handleAddQuestion={handleAddQuestion}
-          handleDeleteQuestion={handleDeleteQuestion}
-        />
+        <Questions questions={questions} setQuestions={setQuestions} />
         <Availability
           availability={availability}
           setAvailability={setAvailability}

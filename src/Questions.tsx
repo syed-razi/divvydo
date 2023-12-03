@@ -1,14 +1,31 @@
 import { QuestionsProps } from "./Types";
+import { useState } from "react";
 
-export default function Questions({
-  questions,
-  questionNumber,
-  setQuestionNumber,
-  marks,
-  setMarks,
-  handleAddQuestion,
-  handleDeleteQuestion,
-}: QuestionsProps) {
+export default function Questions({ questions, setQuestions }: QuestionsProps) {
+  const [questionNumber, setQuestionNumber] = useState("");
+  const [marks, setMarks] = useState("");
+
+  function handleAddQuestion(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const newQuestion = {
+      id: questionNumber,
+      number: questionNumber,
+      marks: +marks,
+    };
+
+    setQuestions([...questions, newQuestion]);
+    setQuestionNumber(String(+questionNumber + 1));
+    setMarks("");
+  }
+
+  function handleDeleteQuestion(id: string) {
+    setQuestions(questions.filter((question) => question.id != id));
+    setQuestionNumber(
+      questions.find((question) => question.id == id)?.number || "",
+    );
+  }
+
   return (
     <div className="flex h-screen w-screen snap-center flex-col items-center justify-center space-y-10 overflow-scroll">
       <h2 className="text-2xl">Enter Question Details:</h2>
@@ -43,20 +60,22 @@ export default function Questions({
             </tr>
           </thead>
           <tbody>
-            {questions.map((question) => (
-              <tr key={question.id}>
-                <td className="border">{question.number}</td>
-                <td className="border">{question.marks}</td>
-                <td>
-                  <button
-                    className="m-1 border"
-                    onClick={() => handleDeleteQuestion(question.id)}
-                  >
-                    delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {questions
+              .sort((a, b) => +a.number - +b.number)
+              .map((question) => (
+                <tr key={question.id}>
+                  <td className="border">{question.number}</td>
+                  <td className="border">{question.marks}</td>
+                  <td>
+                    <button
+                      className="m-1 border"
+                      onClick={() => handleDeleteQuestion(question.id)}
+                    >
+                      delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       )}

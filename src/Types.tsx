@@ -6,12 +6,7 @@ export type QuestionType = {
 
 export type QuestionsProps = {
   questions: QuestionType[];
-  questionNumber: string;
-  setQuestionNumber: React.Dispatch<React.SetStateAction<string>>;
-  marks: string;
-  setMarks: React.Dispatch<React.SetStateAction<string>>;
-  handleAddQuestion: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleDeleteQuestion: (id: string) => void;
+  setQuestions: React.Dispatch<React.SetStateAction<QuestionType[]>>;
 };
 
 export type DatesProps = {
