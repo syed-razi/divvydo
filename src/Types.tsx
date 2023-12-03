@@ -27,8 +27,6 @@ export type AvailabilityType = {
   id: number;
   date: Date;
   hours: string;
-  todo: string[];
-  estimate: number;
 };
 
 export type AvailabilityProps = {
@@ -37,10 +35,19 @@ export type AvailabilityProps = {
 };
 
 export type BreakdownProps = {
-  generated: boolean;
   availability: AvailabilityType[];
-  setAvailability: React.Dispatch<React.SetStateAction<AvailabilityType[]>>;
   estimatedHours: string;
   questions: QuestionType[];
-  setGenerated: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type TodoType = {
+  question: string;
+  amount: number;
+  estimate: number;
+};
+
+export type BreakdownType = {
+  id: number;
+  date: Date;
+  todo: TodoType[];
 };

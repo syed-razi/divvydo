@@ -20,26 +20,11 @@ function App() {
       999,
     ),
   );
-  const [availability, setAvailability] = useState(() => {
-    const initialAvailability: AvailabilityType[] = [];
-    let currentDate = new Date(startDate);
-    while (currentDate <= endDate) {
-      initialAvailability.push({
-        id: currentDate.getTime(),
-        date: new Date(currentDate),
-        hours: "",
-        todo: [],
-        estimate: 0,
-      });
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-    return initialAvailability;
-  });
+  const [availability, setAvailability] = useState<AvailabilityType[]>([]);
   const [estimatedHours, setEstimatedHours] = useState("");
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [questionNumber, setQuestionNumber] = useState("");
   const [marks, setMarks] = useState("");
-  const [generated, setGenerated] = useState(false);
 
   function handleAddQuestion(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,8 +52,6 @@ function App() {
         id: currentDate.getTime(),
         date: new Date(currentDate),
         hours: "",
-        todo: [],
-        estimate: 0,
       });
       currentDate.setDate(currentDate.getDate() + 1);
     }
@@ -120,12 +103,9 @@ function App() {
           setAvailability={setAvailability}
         />
         <Breakdown
-          generated={generated}
           availability={availability}
-          setAvailability={setAvailability}
           estimatedHours={estimatedHours}
           questions={questions}
-          setGenerated={setGenerated}
         />
       </div>
     </>
