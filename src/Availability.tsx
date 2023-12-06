@@ -9,7 +9,8 @@ export default function Availability(props: AvailabilityProps) {
           Availabilty
         </h2>
         <p className="mt-1 text-sm leading-6 text-gray-600">
-          Enter how many hours you are available each day
+          Enter the maximum amount of hours you can/ want to work on this
+          assignment each day
         </p>
       </div>
 
