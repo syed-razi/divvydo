@@ -43,3 +43,13 @@ export type BreakdownType = {
   date: Date;
   todo: TodoType[];
 };
+
+export type AssignmentType = {
+  id: number;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  estimatedHours: string;
+  availability: AvailabilityType[];
+  questions: QuestionType[];
+};

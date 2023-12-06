@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import AddAssignment from "./AddAssignment";
 import Assignments from "./Assignments";
 import Today from "./Today";
+import { AssignmentType } from "./Types";
 
 import {
   Bars3Icon,
@@ -43,6 +44,7 @@ function classNames(...classes: string[]) {
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navigation, setNavigation] = useState(initialNavigation);
+  const [assignments, setAssignments] = useState<AssignmentType[]>([]);
 
   const currentNavItem = navigation.find((navItem) => navItem.current);
 
