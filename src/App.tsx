@@ -1,10 +1,8 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { QuestionType, AvailabilityType } from "./Types";
-import Dates from "./Dates";
-import Questions from "./Questions";
-import Availability from "./Availability";
-import Breakdown from "./Breakdown";
+import AddAssignment from "./AddAssignment";
+import Assignments from "./Assignments";
+
 import {
   Bars3Icon,
   DocumentDuplicateIcon,
@@ -44,9 +42,6 @@ function classNames(...classes: string[]) {
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navigation, setNavigation] = useState(initialNavigation);
-  const [availability, setAvailability] = useState<AvailabilityType[]>([]);
-  const [estimatedHours, setEstimatedHours] = useState("");
-  const [questions, setQuestions] = useState<QuestionType[]>([]);
 
   const currentNavItem = navigation.find((navItem) => navItem.current);
 
@@ -215,23 +210,8 @@ export default function App() {
 
         <main className="py-10 lg:pl-72">
           <div className="px-4 sm:px-6 lg:px-8">
-            <div className="h-screen snap-y snap-mandatory overflow-scroll scroll-smooth">
-              <Dates
-                estimatedHours={estimatedHours}
-                setEstimatedHours={setEstimatedHours}
-                setAvailability={setAvailability}
-              />
-              <Questions questions={questions} setQuestions={setQuestions} />
-              <Availability
-                availability={availability}
-                setAvailability={setAvailability}
-              />
-              <Breakdown
-                availability={availability}
-                estimatedHours={estimatedHours}
-                questions={questions}
-              />
-            </div>
+            {currentNavItem?.name === "Add Assignment" && <AddAssignment />}
+            {currentNavItem?.name === "Assignments" && <Assignments />}
           </div>
         </main>
       </div>

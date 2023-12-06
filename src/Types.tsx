@@ -18,7 +18,7 @@ export type DatesProps = {
 export type AvailabilityType = {
   id: number;
   date: Date;
-  hours: string;
+  hoursAvailable: string;
 };
 
 export type AvailabilityProps = {
