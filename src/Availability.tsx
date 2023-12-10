@@ -1,7 +1,8 @@
-import { AvailabilityProps } from "./Types";
-import AvailabilityInputList from "./AvailabilityInputList";
-
-export default function Availability(props: AvailabilityProps) {
+export default function Availability({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
       <div>
@@ -17,9 +18,7 @@ export default function Availability(props: AvailabilityProps) {
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
         <div className="px-4 py-6 sm:p-8">
           <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
-            <div className="sm:col-span-6">
-              <AvailabilityInputList {...props} />
-            </div>
+            <div className="sm:col-span-6">{children}</div>
           </div>
         </div>
       </div>

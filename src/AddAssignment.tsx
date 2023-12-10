@@ -5,11 +5,21 @@ import Dates from "./Dates";
 import Questions from "./Questions";
 import Availability from "./Availability";
 import Breakdown from "./Breakdown";
+import AvailabilityInputList from "./AvailabilityInputList";
 
 export default function AddAssignment() {
-  const [availability, setAvailability] = useState<AvailabilityType[]>([]);
-  const [estimatedHours, setEstimatedHours] = useState("");
+  const [name, setName] = useState("");
   const [questions, setQuestions] = useState<QuestionType[]>([]);
+  const [estimatedHours, setEstimatedHours] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [availability, setAvailability] = useState<AvailabilityType[]>([
+    {
+      id: startDate.getTime(),
+      date: startDate,
+      hoursAvailable: "",
+    },
+  ]);
 
   return (
     <>
@@ -42,6 +52,49 @@ export default function AddAssignment() {
                         id="name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         placeholder="Assignment 1"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Questions questions={questions} setQuestions={setQuestions} />
+
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+            <div className="px-4 sm:px-0">
+              <h2 className="text-base font-semibold leading-7 text-gray-900">
+                Estimate
+              </h2>
+              <p className="mt-1 text-sm leading-6 text-gray-600">
+                Enter approximately how many hours it will take you to complete
+                this assignments
+              </p>
+            </div>
+
+            <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+              <div className="px-4 py-6 sm:p-8">
+                <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+                  <div className="sm:col-span-4">
+                    <label
+                      htmlFor="estimate"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Estimate
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="number"
+                        name="estimate"
+                        id="estimate"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        placeholder="0"
+                        min="0"
+                        value={estimatedHours}
+                        onChange={(e) => setEstimatedHours(e.target.value)}
                       />
                     </div>
                   </div>
@@ -51,17 +104,20 @@ export default function AddAssignment() {
           </div>
 
           <Dates
-            estimatedHours={estimatedHours}
-            setEstimatedHours={setEstimatedHours}
-            setAvailability={setAvailability}
-          />
-
-          <Availability
+            startDate={startDate}
+            endDate={endDate}
             availability={availability}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
             setAvailability={setAvailability}
           />
 
-          <Questions questions={questions} setQuestions={setQuestions} />
+          <Availability>
+            <AvailabilityInputList
+              availability={availability}
+              setAvailability={setAvailability}
+            />
+          </Availability>
 
           <Breakdown
             availability={availability}

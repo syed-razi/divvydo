@@ -10,8 +10,11 @@ export type QuestionsProps = {
 };
 
 export type DatesProps = {
-  estimatedHours: string;
-  setEstimatedHours: React.Dispatch<React.SetStateAction<string>>;
+  startDate: Date;
+  endDate: Date;
+  availability: AvailabilityType[];
+  setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+  setEndDate: React.Dispatch<React.SetStateAction<Date>>;
   setAvailability: React.Dispatch<React.SetStateAction<AvailabilityType[]>>;
 };
 
