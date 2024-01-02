@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { AvailabilityType, QuestionType } from "./Types";
+import {
+  AvailabilityType,
+  QuestionType,
+  AssignmentType,
+  BreakdownType,
+} from "./Types";
+import { generateBreakdown } from "./functions";
 
 import Dates from "./Dates";
 import Questions from "./Questions";
@@ -7,7 +13,13 @@ import Availability from "./Availability";
 import Breakdown from "./Breakdown";
 import AvailabilityInputList from "./AvailabilityInputList";
 
-export default function AddAssignment() {
+export default function AddAssignment({
+  assignments,
+  setAssignments,
+}: {
+  assignments: AssignmentType[];
+  setAssignments: React.Dispatch<React.SetStateAction<AssignmentType[]>>;
+}) {
   const [name, setName] = useState("");
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [estimatedHours, setEstimatedHours] = useState("");
@@ -20,10 +32,44 @@ export default function AddAssignment() {
       hoursAvailable: "",
     },
   ]);
+  const [breakdownPreview, setBreakdownPreview] = useState<BreakdownType[]>([]);
+
+  function handleAddAssignment(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const breakdown =
+      breakdownPreview ||
+      generateBreakdown(availability, questions, estimatedHours);
+
+    const newAssignment = {
+      id: crypto.randomUUID(),
+      name,
+      questions,
+      estimatedHours,
+      startDate,
+      endDate,
+      availability,
+      breakdown,
+    };
+    setAssignments([...assignments, newAssignment]);
+    setName("");
+    setQuestions([]);
+    setEstimatedHours("");
+    setStartDate(new Date());
+    setEndDate(new Date());
+    setAvailability([
+      {
+        id: startDate.getTime(),
+        date: startDate,
+        hoursAvailable: "",
+      },
+    ]);
+    setBreakdownPreview([]);
+  }
 
   return (
     <>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={(e) => handleAddAssignment(e)}>
         <div className="space-y-12 ">
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
             <div className="px-4 sm:px-0">
@@ -71,7 +117,7 @@ export default function AddAssignment() {
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">
                 Enter approximately how many hours it will take you to complete
-                this assignments
+                this assignment
               </p>
             </div>
 
@@ -123,6 +169,8 @@ export default function AddAssignment() {
             availability={availability}
             estimatedHours={estimatedHours}
             questions={questions}
+            breakdown={breakdownPreview}
+            setBreakdown={setBreakdownPreview}
           />
         </div>
 

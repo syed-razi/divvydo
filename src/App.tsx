@@ -214,8 +214,15 @@ export default function App() {
         <main className="py-10 lg:pl-72">
           <div className="px-4 sm:px-6 lg:px-8">
             {currentNavItem?.name === "Today" && <Today />}
-            {currentNavItem?.name === "Assignments" && <Assignments />}
-            {currentNavItem?.name === "Add Assignment" && <AddAssignment />}
+            {currentNavItem?.name === "Assignments" && (
+              <Assignments assignments={assignments} />
+            )}
+            {currentNavItem?.name === "Add Assignment" && (
+              <AddAssignment
+                assignments={assignments}
+                setAssignments={setAssignments}
+              />
+            )}
           </div>
         </main>
       </div>

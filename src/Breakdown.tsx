@@ -1,23 +1,15 @@
-import { BreakdownProps, BreakdownType, TodoType } from "./Types";
-
+import { BreakdownProps } from "./Types";
+import { generateBreakdown } from "./functions";
 import { useState } from "react";
 
 export default function Breakdown({
   availability,
   estimatedHours,
   questions,
+  breakdown,
+  setBreakdown,
 }: BreakdownProps) {
-  const [breakDown, setBreakDown] = useState<BreakdownType[]>([]);
   const [generated, setGenerated] = useState(false);
-
-  const totalMarks = questions.reduce(
-    (total, question) => total + +question.marks,
-    0,
-  );
-  const totalAvailability = availability.reduce(
-    (total, a) => total + +a.hoursAvailable,
-    0,
-  );
 
   function formatTime(hours: number) {
     const hoursStr = Math.floor(hours).toString();
@@ -27,79 +19,13 @@ export default function Breakdown({
     }`;
   }
 
-  function generateBreakdown() {
-    const newBreakDown: BreakdownType[] = [];
-
-    let questionIndex = 0;
-
-    let remainder = 0;
-
-    for (const a of availability) {
-      let date = new Date(a.date);
-      let todo: TodoType[] = [];
-      let proportion = +a.hoursAvailable / totalAvailability || 0;
-
-      let marksTodoToday, marksRemainingToday;
-      marksTodoToday = marksRemainingToday = proportion * totalMarks;
-
-      if (marksRemainingToday === 0) {
-        todo.push({
-          question: "take a break :)",
-          amount: 0,
-          estimate: 0,
-        });
-
-        newBreakDown.push({
-          id: date.getTime(),
-          date,
-          todo,
-        });
-        continue;
-      }
-
-      while (questionIndex < questions.length) {
-        let marksRemainingForCurrQuestion =
-          remainder != 0 ? remainder : questions[questionIndex].marks;
-
-        remainder =
-          marksRemainingToday >= marksRemainingForCurrQuestion
-            ? 0
-            : marksRemainingForCurrQuestion - marksRemainingToday;
-
-        let marksToCompleteForCurrQuestion =
-          marksRemainingToday >= marksRemainingForCurrQuestion
-            ? marksRemainingForCurrQuestion
-            : marksRemainingToday;
-
-        todo.push({
-          question: questions[questionIndex].number,
-          amount: marksToCompleteForCurrQuestion,
-          estimate:
-            (marksToCompleteForCurrQuestion / marksTodoToday) *
-            proportion *
-            +estimatedHours,
-        });
-
-        if (remainder === 0) {
-          questionIndex++;
-        }
-
-        marksRemainingToday =
-          marksRemainingForCurrQuestion > marksRemainingToday
-            ? 0
-            : marksRemainingToday - marksRemainingForCurrQuestion;
-
-        if (marksRemainingToday === 0) {
-          newBreakDown.push({
-            id: date.getTime(),
-            date,
-            todo,
-          });
-          break;
-        }
-      }
-    }
-    setBreakDown(newBreakDown);
+  function handleGenerateBreakdown() {
+    const newBreakdown = generateBreakdown(
+      availability,
+      questions,
+      estimatedHours,
+    );
+    setBreakdown(newBreakdown);
     setGenerated(true);
   }
 
@@ -114,7 +40,7 @@ export default function Breakdown({
         </p>
         <button
           type="button"
-          onClick={generateBreakdown}
+          onClick={handleGenerateBreakdown}
           className="rounded-full bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Generate
@@ -162,7 +88,7 @@ export default function Breakdown({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {breakDown.map((row) =>
+                    {breakdown.map((row) =>
                       row.todo.map((item, index) => (
                         <tr key={crypto.randomUUID()}>
                           {index === 0 && (
