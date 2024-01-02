@@ -92,3 +92,11 @@ export function generateBreakdown(
   }
   return newBreakdown;
 }
+
+export function formatTime(hours: number) {
+  const hoursStr = Math.floor(hours).toString();
+  const minutesStr = Math.floor((hours - Math.floor(hours)) * 60).toString();
+  return `${hoursStr}:${
+    minutesStr.length === 1 ? `0${minutesStr}` : minutesStr
+  }`;
+}

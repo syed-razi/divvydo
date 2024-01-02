@@ -1,5 +1,5 @@
 import { BreakdownProps } from "./Types";
-import { generateBreakdown } from "./functions";
+import { generateBreakdown, formatTime } from "./functions";
 import { useState } from "react";
 
 export default function Breakdown({
@@ -10,14 +10,6 @@ export default function Breakdown({
   setBreakdown,
 }: BreakdownProps) {
   const [generated, setGenerated] = useState(false);
-
-  function formatTime(hours: number) {
-    const hoursStr = Math.floor(hours).toString();
-    const minutesStr = Math.floor((hours - Math.floor(hours)) * 60).toString();
-    return `${hoursStr}:${
-      minutesStr.length === 1 ? `0${minutesStr}` : minutesStr
-    }`;
-  }
 
   function handleGenerateBreakdown() {
     const newBreakdown = generateBreakdown(
