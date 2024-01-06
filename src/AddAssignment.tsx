@@ -65,6 +65,11 @@ export default function AddAssignment({
       },
     ]);
     setBreakdownPreview([]);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   return (
