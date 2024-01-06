@@ -4,7 +4,9 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import QuestionList from "./QuestionList";
 
 export default function Questions({ questions, setQuestions }: QuestionsProps) {
-  const [questionNumber, setQuestionNumber] = useState("");
+  const [questionNumber, setQuestionNumber] = useState(
+    String(questions.length + 1),
+  );
   const [marks, setMarks] = useState("");
 
   const marksInputRef = useRef<HTMLInputElement>(null);
@@ -17,8 +19,10 @@ export default function Questions({ questions, setQuestions }: QuestionsProps) {
       marks: +marks,
     };
 
-    setQuestions([...questions, newQuestion]);
-    setQuestionNumber(String(+questionNumber + 1));
+    const newQuestions = [...questions, newQuestion];
+
+    setQuestions(newQuestions);
+    setQuestionNumber(String(newQuestions.length + 1));
     setMarks("");
     marksInputRef.current?.focus();
   }
