@@ -3,6 +3,7 @@ import { formatTime } from "./functions";
 import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import NoAssignmentsFound from "./NoAssignmentsFound";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -177,7 +178,7 @@ export default function Assignments({
           </ul>
         </>
       ) : (
-        "Please add assignments"
+        <NoAssignmentsFound />
       )}
     </div>
   );
