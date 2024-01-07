@@ -17,6 +17,7 @@ export default function Assignments({
   const [selectedBreakdown, setSelectedBreakdown] = useState<BreakdownType[]>(
     assignments.length > 0 ? assignments[0].breakdown : [],
   );
+
   return (
     <div className="">
       {assignments.length > 0 ? (
@@ -87,7 +88,7 @@ export default function Assignments({
               </div>
             </div>
           </div>
-          <div className="relative my-5">
+          <div className="relative mb-3 mt-10">
             <div
               className="absolute inset-0 flex items-center"
               aria-hidden="true"
@@ -124,7 +125,8 @@ export default function Assignments({
                 <div className="flex flex-none items-center gap-x-4">
                   <button
                     onClick={() => setSelectedBreakdown(assignment.breakdown)}
-                    className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
+                    className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:block"
+                    disabled={assignment.breakdown === selectedBreakdown}
                   >
                     View Breakdown
                     <span className="sr-only">, {assignment.name}</span>
