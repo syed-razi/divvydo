@@ -21,6 +21,11 @@ export default function Assignments({
     <div className="">
       {assignments.length > 0 ? (
         <>
+          <div className="border-gray-200 pb-5">
+            <h3 className="text-center text-base font-semibold leading-6 text-gray-900">
+              Breakdown
+            </h3>
+          </div>
           <div className="max-h-[50vh] overflow-y-auto bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
             <div className="px-4 py-6 sm:p-8">
               <div className="sm:col-span-6">
@@ -80,6 +85,19 @@ export default function Assignments({
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+          <div className="relative my-5">
+            <div
+              className="absolute inset-0 flex items-center"
+              aria-hidden="true"
+            >
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-white px-3 text-base font-semibold leading-6 text-gray-900">
+                Assignments
+              </span>
             </div>
           </div>
           <ul role="list" className="divide-y divide-gray-100">
