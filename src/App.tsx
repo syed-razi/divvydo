@@ -2,13 +2,11 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import AddAssignment from "./AddAssignment";
 import Assignments from "./Assignments";
-import Today from "./Today";
 import { AssignmentType } from "./Types";
 
 import {
   Bars3Icon,
   DocumentDuplicateIcon,
-  InboxIcon,
   XMarkIcon,
   DocumentPlusIcon,
 } from "@heroicons/react/24/outline";
@@ -22,7 +20,6 @@ type navigationItemType = {
 };
 
 const initialNavigation: navigationItemType[] = [
-  { name: "Today", href: "#", icon: InboxIcon, current: true },
   {
     name: "Assignments",
     href: "#",
@@ -33,7 +30,7 @@ const initialNavigation: navigationItemType[] = [
     name: "Add Assignment",
     href: "#",
     icon: DocumentPlusIcon,
-    current: false,
+    current: true,
   },
 ];
 
@@ -213,7 +210,6 @@ export default function App() {
 
         <main className="py-10 lg:pl-72">
           <div className="px-4 sm:px-6 lg:px-8">
-            {currentNavItem?.name === "Today" && <Today />}
             {currentNavItem?.name === "Assignments" && (
               <Assignments assignments={assignments} />
             )}
