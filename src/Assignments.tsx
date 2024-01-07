@@ -13,6 +13,9 @@ export default function Assignments({
   const [selectedBreakdown, setSelectedBreakdown] = useState<BreakdownType[]>(
     assignments.length > 0 ? assignments[0].breakdown : [],
   );
+  const [selectedAssignmentName, setSelectedAssignmentName] = useState<string>(
+    assignments.length > 0 ? assignments[0].name : "",
+  );
 
   function handleDeleteAssignment(id: string) {
     const newAssignments = assignments.filter(
@@ -24,6 +27,11 @@ export default function Assignments({
     setAssignments(newAssignments);
   }
 
+  function handleViewBreakdown(assignment: AssignmentType) {
+    setSelectedBreakdown(assignment.breakdown);
+    setSelectedAssignmentName(assignment.name);
+  }
+
   return (
     <div className="">
       {assignments.length > 0 ? (
@@ -33,8 +41,11 @@ export default function Assignments({
               Breakdown
             </h3>
           </div>
-          <div className="max-h-[50vh] overflow-y-auto bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+          <div className="max-h-[55vh] overflow-y-auto bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
             <div className="px-4 py-6 sm:p-8">
+              <h1 className="text-center text-base font-semibold leading-6 text-gray-900">
+                {selectedAssignmentName}
+              </h1>
               <div className="sm:col-span-6">
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead>
@@ -130,7 +141,7 @@ export default function Assignments({
                 </div>
                 <div className="flex flex-none items-center gap-x-4">
                   <button
-                    onClick={() => setSelectedBreakdown(assignment.breakdown)}
+                    onClick={() => handleViewBreakdown(assignment)}
                     className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:block"
                     disabled={assignment.breakdown === selectedBreakdown}
                   >
