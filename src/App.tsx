@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import AddAssignment from "./AddAssignment";
 import Assignments from "./Assignments";
-import { AssignmentType } from "./Types";
+import { AssignmentType, NavigationItemType } from "./Types";
 
 import {
   Bars3Icon,
@@ -12,14 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import "/src/App.css";
 
-type navigationItemType = {
-  name: string;
-  href: string;
-  icon: any;
-  current: boolean;
-};
-
-const initialNavigation: navigationItemType[] = [
+const initialNavigation: NavigationItemType[] = [
   {
     name: "Assignments",
     href: "#",
@@ -45,7 +38,7 @@ export default function App() {
 
   const currentNavItem = navigation.find((navItem) => navItem.current);
 
-  function handleNavigationClick(item: navigationItemType) {
+  function handleNavigationClick(item: NavigationItemType) {
     const newNavigation = navigation.map((navItem) => {
       navItem.current = navItem.name === item.name;
       return navItem;

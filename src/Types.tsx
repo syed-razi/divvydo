@@ -1,3 +1,10 @@
+export type NavigationItemType = {
+  name: string;
+  href: string;
+  icon: any;
+  current: boolean;
+};
+
 export type QuestionType = {
   id: string;
   number: string;
@@ -7,6 +14,11 @@ export type QuestionType = {
 export type QuestionsProps = {
   questions: QuestionType[];
   setQuestions: React.Dispatch<React.SetStateAction<QuestionType[]>>;
+};
+
+export type AssignmentProps = {
+  assignments: AssignmentType[];
+  setAssignments: React.Dispatch<React.SetStateAction<AssignmentType[]>>;
 };
 
 export type DatesProps = {

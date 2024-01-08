@@ -1,4 +1,4 @@
-import { AssignmentType, BreakdownItemType } from "./Types";
+import { AssignmentProps, AssignmentType, BreakdownItemType } from "./Types";
 import { formatTime } from "./functions";
 import { useState } from "react";
 import NoAssignmentsFound from "./NoAssignmentsFound";
@@ -6,10 +6,7 @@ import NoAssignmentsFound from "./NoAssignmentsFound";
 export default function Assignments({
   assignments,
   setAssignments,
-}: {
-  assignments: AssignmentType[];
-  setAssignments: React.Dispatch<React.SetStateAction<AssignmentType[]>>;
-}) {
+}: AssignmentProps) {
   const [selectedBreakdown, setSelectedBreakdown] = useState<
     BreakdownItemType[]
   >(assignments.length > 0 ? assignments[0].breakdown : []);
