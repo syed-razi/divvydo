@@ -3,7 +3,7 @@ import {
   AvailabilityType,
   QuestionType,
   AssignmentType,
-  BreakdownType,
+  BreakdownItemType,
 } from "./Types";
 import { generateBreakdown } from "./functions";
 
@@ -32,7 +32,9 @@ export default function AddAssignment({
       hoursAvailable: "",
     },
   ]);
-  const [breakdownPreview, setBreakdownPreview] = useState<BreakdownType[]>([]);
+  const [breakdownPreview, setBreakdownPreview] = useState<BreakdownItemType[]>(
+    [],
+  );
 
   function handleAddAssignment(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

@@ -33,8 +33,8 @@ export type BreakdownProps = {
   availability: AvailabilityType[];
   estimatedHours: string;
   questions: QuestionType[];
-  breakdown: BreakdownType[];
-  setBreakdown: React.Dispatch<React.SetStateAction<BreakdownType[]>>;
+  breakdown: BreakdownItemType[];
+  setBreakdown: React.Dispatch<React.SetStateAction<BreakdownItemType[]>>;
 };
 
 export type TodoType = {
@@ -43,7 +43,7 @@ export type TodoType = {
   estimate: number;
 };
 
-export type BreakdownType = {
+export type BreakdownItemType = {
   id: number;
   date: Date;
   todo: TodoType[];
@@ -57,5 +57,5 @@ export type AssignmentType = {
   startDate: Date;
   endDate: Date;
   availability: AvailabilityType[];
-  breakdown: BreakdownType[];
+  breakdown: BreakdownItemType[];
 };
