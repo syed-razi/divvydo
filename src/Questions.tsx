@@ -47,8 +47,8 @@ export default function Questions({ questions, setQuestions }: QuestionsProps) {
 
       <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
         <div className="px-4 py-6 sm:p-8">
-          <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
-            <div className="sm:col-span-2">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+            <div className="sm:col-span-2 sm:col-start-2">
               <label
                 htmlFor="question"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -93,7 +93,7 @@ export default function Questions({ questions, setQuestions }: QuestionsProps) {
                 />
               </div>
             </div>
-            <div className="self-end sm:col-span-1">
+            <div className="self-end justify-self-center sm:col-span-1">
               <div className="mt-2">
                 <button
                   ref={addButtonRef}
@@ -101,12 +101,15 @@ export default function Questions({ questions, setQuestions }: QuestionsProps) {
                   onClick={handleAddQuestion}
                   className="rounded-full bg-indigo-600 p-1.5 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                  <PlusIcon
+                    className="h-7 w-7 sm:h-5 sm:w-5"
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             </div>
 
-            <div className="sm:col-span-6">
+            <div className="sm:col-span-4 sm:col-start-2">
               <QuestionList
                 onDeleteQuestion={handleDeleteQuestion}
                 questions={questions}

@@ -30,19 +30,12 @@ export default function Breakdown({
         <p className="mb-6 mt-1 text-sm leading-6 text-gray-600">
           Click generate to see a preview of your breakdown
         </p>
-        <button
-          type="button"
-          onClick={handleGenerateBreakdown}
-          className="rounded-full bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Generate
-        </button>
       </div>
 
-      {generated && (
-        <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-          <div className="px-4 py-6 sm:p-8">
-            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+        <div className="px-4 py-6 sm:p-8">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+            {generated && (
               <div className="sm:col-span-6">
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead>
@@ -55,13 +48,13 @@ export default function Breakdown({
                       </th>
                       <th
                         scope="col"
-                        className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         Question
                       </th>
                       <th
                         scope="col"
-                        className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         Marks
                       </th>
@@ -91,10 +84,10 @@ export default function Breakdown({
                               {row.date.toDateString()}
                             </td>
                           )}
-                          <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {item.question}
                           </td>
-                          <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {`${Math.round(item.amount * 100) / 100} marks`}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -106,10 +99,18 @@ export default function Breakdown({
                   </tbody>
                 </table>
               </div>
-            </div>
+            )}
+
+            <button
+              type="button"
+              onClick={handleGenerateBreakdown}
+              className="rounded-full bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-3 sm:col-end-5"
+            >
+              {generated ? "Re-Generate" : "Generate"}
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
